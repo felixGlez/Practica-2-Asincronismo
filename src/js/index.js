@@ -17,9 +17,13 @@ const breedsURL = 'https://dog.ceo/api/breeds/list/all';
 
 //PETICIÓN
 const fetchData = async url => {
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 //PINTAR TODAS LAS RAZAS
@@ -48,9 +52,6 @@ const printAllBreeds = async () => {
 const checkSubBreeds = async () => {
   const selectedBreed = breedsElement.value;
   const subBreeds = dataBreeds[selectedBreed];
-
-  console.log(selectedBreed);
-  console.log(subBreeds);
 
   const existingSelect = document.getElementById('sub-breeds');
   if (existingSelect) {
@@ -140,7 +141,7 @@ const getDogImage = async () => {
 };
 
 //PINTAR IMÁGENES DE PERROS
-const printDogImage = img => {
+const printDogImage = async img => {
   const existingImg = document.getElementById('dog-image');
 
   if (existingImg) {
@@ -157,12 +158,68 @@ const printDogImage = img => {
   newImg.classList.add('main__dog-img');
   //like button
   const newButton = document.createElement('button');
+  newButton.id = 'like';
   newButton.classList.add('main__like-button');
   newButton.innerHTML = '<i class="far fa-heart"></i>';
 
   newDiv.append(newImg, newButton);
   mainElement.append(newDiv);
+
+  newButton.addEventListener('click', () => saveFavs(img));
 };
+
+const saveFavs = async img => {
+  // Obtener las imágenes favoritas del LocalStorage o inicializar un array vacío
+  const favoritas = JSON.parse(localStorage.getItem('favoritas')) || [];
+
+  // Verificar si la imagen ya está en favoritas antes de agregarla
+  if (!favoritas.includes(img)) {
+    favoritas.push(img);
+    console.log(favoritas);
+
+    // Guardar el array actualizado en el LocalStorage
+    localStorage.setItem('favoritas', JSON.stringify(favoritas));
+    alert('Imagen guardada como favorita.');
+    printFavs(img);
+  } else {
+    alert('Esta imagen ya está guardada como favorita.');
+  }
+};
+
+const printFavs = img => {
+  const favImgsElement = document.getElementById('favs-imgs');
+  //crear div
+  const newDiv = document.createElement('div');
+  newDiv.classList.add('main__fav-img-container');
+  //crear img
+  const newImg = document.createElement('img');
+  newImg.src = img;
+  //crear botón
+  const newButton = document.createElement('button');
+  newButton.textContent = 'X';
+  newButton.classList.add('main__like-button', 'main__dislike-button');
+
+  newDiv.append(newImg, newButton);
+  favImgsElement.append(newDiv);
+};
+
+/*
+const clearFavorites = () => {
+  localStorage.removeItem('favoritas');
+  console.log('Lista de imágenes favoritas borrada.');
+};
+clearFavorites();
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Obtener las imágenes favoritas del LocalStorage
+  const favoritas = JSON.parse(localStorage.getItem('favoritas')) || [];
+
+  // Imprimir las imágenes favoritas
+  favoritas.forEach(img => {
+    printFavs(img);
+  });
+});
 
 breedsElement.addEventListener('change', checkSubBreeds);
 printAllBreeds();

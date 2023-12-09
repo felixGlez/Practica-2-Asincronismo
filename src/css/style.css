@@ -8,7 +8,8 @@
 }
 body{
   margin: 0;
-  background-color: #84efff;
+  /* background-color: #84efff; */
+  background-color: #f9e8ca;
   font-family: var(--font-general);
 }
 .main{
@@ -56,10 +57,12 @@ body{
 }
 .main__dog-img-container{
   width: 50%;
+  max-width: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  margin-bottom: 50px;
 }
 .main__dog-img{
   width: 100%;
@@ -80,7 +83,40 @@ body{
   box-shadow: 4px 4px 0px 0px rgb(0 0 0);
 }
 .main__like-button:hover{
-  background-color: #85efff;
+  background-color: #ff85eb;
   cursor: pointer;
   box-shadow: 0px 0px 0px 0px rgb(0 0 0);
+}
+.main--fav-imgs{
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0px 100px;
+  align-items: flex-start;
+  position: relative;
+}
+.main--fav-imgs img{
+  width: 300px;
+  border-radius: 30px;
+  padding: 10px;
+}
+.main h2{
+  margin-bottom: 10px;
+  letter-spacing: 10px;
+  color: #a96607;
+  text-align: center;
+}
+#favs{
+  padding-top: 100px;
+}
+.main__dislike-button{
+  right: 30px;
+  top: 20px;
+  width: 40px;
+  height: 40px;
+}
+.main__fav-img-container{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  position: relative;
 }
