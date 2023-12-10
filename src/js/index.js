@@ -1,10 +1,3 @@
-// Añade un botón a cada imagen que te permita guardarla como favorita en el LocalStorage
-// Las imágenes favoritas siempre se mostrarán en la web y tendrán un botón de "quitar favorito" lo cual la eliminará del LocalStorage.
-
-//Seguir esta estructura:
-//Hacer una función que haga peticiones (fetchdata)
-//Hacer una función que la pinte (printData)
-
 //SELECTORES
 const mainElement = document.getElementById('main');
 const breedsElement = document.getElementById('breeds');
@@ -170,15 +163,15 @@ const printDogImage = async img => {
 
 const saveFavs = async img => {
   // Obtener las imágenes favoritas del LocalStorage o inicializar un array vacío
-  const favoritas = JSON.parse(localStorage.getItem('favoritas')) || [];
+  const savedImages = JSON.parse(localStorage.getItem('favoritas')) || [];
 
   // Verificar si la imagen ya está en favoritas antes de agregarla
-  if (!favoritas.includes(img)) {
-    favoritas.push(img);
-    console.log(favoritas);
+  if (!savedImages.includes(img)) {
+    savedImages.push(img);
+    console.log(savedImages);
 
     // Guardar el array actualizado en el LocalStorage
-    localStorage.setItem('favoritas', JSON.stringify(favoritas));
+    localStorage.setItem('favoritas', JSON.stringify(savedImages));
     alert('Imagen guardada como favorita.');
     printFavs(img);
   } else {
@@ -196,20 +189,22 @@ const printFavs = img => {
   newImg.src = img;
   //crear botón
   const newButton = document.createElement('button');
+  newButton.id = 'dislike-button';
   newButton.textContent = 'X';
   newButton.classList.add('main__like-button', 'main__dislike-button');
 
   newDiv.append(newImg, newButton);
   favImgsElement.append(newDiv);
-};
 
-/*
-const clearFavorites = () => {
-  localStorage.removeItem('favoritas');
-  console.log('Lista de imágenes favoritas borrada.');
+  newButton.addEventListener('click', event => {
+    if (event.target.id !== 'dislike-button') return;
+    newDiv.remove();
+
+    const savedImages = JSON.parse(localStorage.getItem('favoritas') || []);
+    const updatedImages = savedImages.filter(saved => saved !== img);
+    localStorage.setItem('favoritas', JSON.stringify(updatedImages));
+  });
 };
-clearFavorites();
-*/
 
 document.addEventListener('DOMContentLoaded', () => {
   // Obtener las imágenes favoritas del LocalStorage

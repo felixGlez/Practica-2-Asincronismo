@@ -22,6 +22,7 @@ body{
   text-align: center;
   color: #a96607;
   font-size: 3rem;
+  text-shadow: 3px 3px 0px white;
 }
 .main__title--subtitle{
   color: #000;
